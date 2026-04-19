@@ -6,6 +6,10 @@ pipeline {
         jdk 'JDK21'
     }
 
+    environment {
+        ANYPOINT_CREDS = credentials('anypoint-creds')
+    }
+
     stages {
 
         stage('Checkout') {
@@ -26,12 +30,14 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            when {
-                branch 'main'
-            }
+        stage('Deploy to CloudHub') {
             steps {
-                bat 'mvn deploy -DmuleDeploy -DskipTests'
+                bat """
+                    mvn deploy -DmuleDeploy ^
+                    -Danypoint.username=%ANYPOINT_CREDS_USR% ^
+                    -Danypoint.password=%ANYPOINT_CREDS_PSW% ^
+                    -DskipTests
+                """
             }
         }
 
@@ -39,10 +45,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build successful!'
+            echo 'Deployed to CloudHub successfully!'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Deployment failed!'
         }
     }
 }

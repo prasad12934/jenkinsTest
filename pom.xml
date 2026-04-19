@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.mycompany</groupId>
     <artifactId>jenkinstest</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -11,6 +12,7 @@
     <name>jenkinstest</name>
 
     <properties>
+        <!-- Encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -22,8 +24,8 @@
         <cloudhub.application.name>jenkinstest</cloudhub.application.name>
         <cloudhub.environment>Sandbox</cloudhub.environment>
 
-        <!-- ✅ FIXED TARGET -->
-        <cloudhub.target>Cloudhub-US-East-1</cloudhub.target>
+        <!-- ✅ FINAL FIX: Match org region -->
+        <cloudhub.target>Cloudhub-US-East-2</cloudhub.target>
 
         <cloudhub.replicas>1</cloudhub.replicas>
         <cloudhub.vcores>0.1</cloudhub.vcores>
@@ -32,12 +34,14 @@
     <build>
         <plugins>
 
+            <!-- Clean Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
 
+            <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -46,22 +50,27 @@
 
                 <configuration>
                     <cloudhub2Deployment>
-                        <uri>https://anypoint.mulesoft.com</uri>
 
-                        <!-- Credentials should come from Jenkins -->
+                        <!-- Anypoint -->
+                        <uri>https://anypoint.mulesoft.com</uri>
                         <username>${anypoint.username}</username>
                         <password>${anypoint.password}</password>
 
+                        <!-- App -->
                         <applicationName>${cloudhub.application.name}</applicationName>
                         <environment>${cloudhub.environment}</environment>
                         <target>${cloudhub.target}</target>
 
-                        <!-- REQUIRED for CloudHub 2.0 -->
+                        <!-- REQUIRED -->
                         <provider>MC</provider>
 
+                        <!-- Runtime -->
                         <muleVersion>${app.runtime}</muleVersion>
+
+                        <!-- Resources -->
                         <replicas>${cloudhub.replicas}</replicas>
                         <vCores>${cloudhub.vcores}</vCores>
+
                     </cloudhub2Deployment>
                 </configuration>
             </plugin>
@@ -69,7 +78,9 @@
         </plugins>
     </build>
 
+    <!-- Dependencies -->
     <dependencies>
+
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -90,18 +101,18 @@
             <version>1.11.11</version>
             <classifier>mule-plugin</classifier>
         </dependency>
+
     </dependencies>
 
+    <!-- Repositories -->
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
-            <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
         </repository>
 
         <repository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases</name>
             <url>https://repository.mulesoft.org/nexus/repository/releases/</url>
         </repository>
     </repositories>

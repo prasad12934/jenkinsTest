@@ -30,13 +30,26 @@ pipeline {
             }
         }
 
-        stage('Deploy to CloudHub') {
+        // ✅ NEW STAGE (IMPORTANT)
+        stage('Publish to Exchange') {
             steps {
                 bat """
-                    mvn deploy -DmuleDeploy ^
+                    mvn clean deploy ^
                     -Danypoint.username=%ANYPOINT_CREDS_USR% ^
                     -Danypoint.password=%ANYPOINT_CREDS_PSW% ^
                     -DskipTests
+                """
+            }
+        }
+
+        // ✅ FIXED DEPLOY STAGE
+        stage('Deploy to CloudHub') {
+            steps {
+                bat """
+                    mvn mule:deploy ^
+                    -DmuleDeploy ^
+                    -Danypoint.username=%ANYPOINT_CREDS_USR% ^
+                    -Danypoint.password=%ANYPOINT_CREDS_PSW%
                 """
             }
         }
@@ -45,10 +58,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deployed to CloudHub successfully!'
+            echo 'Application deployed successfully to CloudHub 🚀'
         }
         failure {
-            echo 'Deployment failed!'
+            echo 'Deployment failed ❌'
         }
     }
 }

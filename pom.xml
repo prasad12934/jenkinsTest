@@ -9,18 +9,13 @@
     <artifactId>jenkinstest</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
-    <name>jenkinstest</name>
 
     <properties>
-        <!-- Encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <!-- Mule Runtime -->
         <app.runtime>4.6.0</app.runtime>
         <mule.maven.plugin.version>4.7.0</mule.maven.plugin.version>
 
-        <!-- CloudHub 2.0 -->
         <cloudhub.application.name>jenkinstest</cloudhub.application.name>
         <cloudhub.environment>Sandbox</cloudhub.environment>
         <cloudhub.target>Cloudhub-US-East-2</cloudhub.target>
@@ -29,11 +24,10 @@
         <cloudhub.vcores>0.1</cloudhub.vcores>
     </properties>
 
-    <!-- ✅ REQUIRED: Publish to Exchange -->
+    <!-- Exchange publish -->
     <distributionManagement>
         <repository>
             <id>anypoint-exchange</id>
-            <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
         </repository>
     </distributionManagement>
@@ -41,14 +35,12 @@
     <build>
         <plugins>
 
-            <!-- Clean Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
 
-            <!-- Mule Maven Plugin -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
@@ -66,16 +58,11 @@
                         <environment>${cloudhub.environment}</environment>
                         <target>${cloudhub.target}</target>
 
-                        <!-- REQUIRED -->
                         <provider>MC</provider>
-
                         <muleVersion>${app.runtime}</muleVersion>
 
                         <replicas>${cloudhub.replicas}</replicas>
                         <vCores>${cloudhub.vcores}</vCores>
-
-                        <!-- Allows redeploy -->
-                        <redeploy>true</redeploy>
 
                     </cloudhub2Deployment>
                 </configuration>
@@ -84,9 +71,7 @@
         </plugins>
     </build>
 
-    <!-- Dependencies -->
     <dependencies>
-
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
@@ -107,10 +92,8 @@
             <version>1.11.11</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-
     </dependencies>
 
-    <!-- Repositories -->
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
@@ -123,11 +106,10 @@
         </repository>
     </repositories>
 
-    <!-- ✅ CRITICAL FIX (your last error) -->
+    <!-- CRITICAL -->
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
             <url>https://repository.mulesoft.org/nexus/repository/releases/</url>
         </pluginRepository>
     </pluginRepositories>

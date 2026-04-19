@@ -13,17 +13,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <app.runtime>4.11.0</app.runtime>
+        <app.runtime>4.6.0</app.runtime>
         <mule.maven.plugin.version>4.7.0</mule.maven.plugin.version>
 
-        <!-- CloudHub Properties (passed from Jenkins) -->
+        <!-- CloudHub 2.0 Properties (passed from Jenkins) -->
         <anypoint.username></anypoint.username>
         <anypoint.password></anypoint.password>
         <cloudhub.application.name>jenkinstest</cloudhub.application.name>
         <cloudhub.environment>Sandbox</cloudhub.environment>
-        <cloudhub.region>us-east-1</cloudhub.region>
-        <cloudhub.workers>1</cloudhub.workers>
-        <cloudhub.workerType>MICRO</cloudhub.workerType>
+        <cloudhub.target>Sandbox</cloudhub.target>
+        <cloudhub.replicas>1</cloudhub.replicas>
+        <cloudhub.vcores>0.1</cloudhub.vcores>
     </properties>
 
     <build>
@@ -39,17 +39,18 @@
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <cloudHubDeployment>
+                    <cloudhub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
                         <username>${anypoint.username}</username>
                         <password>${anypoint.password}</password>
                         <applicationName>${cloudhub.application.name}</applicationName>
                         <environment>${cloudhub.environment}</environment>
+                        <target>${cloudhub.target}</target>
+                        <provider>MC</provider>
                         <muleVersion>${app.runtime}</muleVersion>
-                        <workers>${cloudhub.workers}</workers>
-                        <workerType>${cloudhub.workerType}</workerType>
-                        <region>${cloudhub.region}</region>
-                    </cloudHubDeployment>
+                        <replicas>${cloudhub.replicas}</replicas>
+                        <vCores>${cloudhub.vcores}</vCores>
+                    </cloudhub2Deployment>
                 </configuration>
             </plugin>
         </plugins>
